@@ -3539,3 +3539,359 @@ kbd {
     }
 }
 
+/* ===== KAPSAMLI MOBİL UYUMLULUK ===== */
+
+/* Tablet ve altı */
+@media (max-width: 992px) {
+    .sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        height: 100vh;
+        z-index: 1000;
+        transition: left 0.3s ease;
+    }
+    
+    .sidebar.open {
+        left: 0;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+        padding: 16px !important;
+    }
+    
+    .sandbox-container {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .sandbox-output-panel {
+        min-height: 300px;
+    }
+}
+
+/* Mobil - Tüm cihazlar */
+@media (max-width: 768px) {
+    /* Genel */
+    body {
+        font-size: 14px;
+    }
+    
+    .main-content {
+        padding: 12px !important;
+    }
+    
+    .section {
+        padding: 0;
+    }
+    
+    /* Başlıklar */
+    .page-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .page-subtitle {
+        font-size: 0.9rem !important;
+    }
+    
+    .hero-title {
+        font-size: 1.8rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem !important;
+    }
+    
+    /* Kartlar */
+    .concepts-grid,
+    .algorithms-grid,
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    .concept-card,
+    .algorithm-card,
+    .stat-card {
+        padding: 16px !important;
+    }
+    
+    /* Sandbox */
+    .sandbox-container {
+        gap: 16px !important;
+    }
+    
+    .editor-toolbar {
+        flex-direction: column !important;
+        gap: 12px !important;
+        padding: 12px !important;
+    }
+    
+    .toolbar-left,
+    .toolbar-right {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    
+    .sandbox-lang-selector {
+        width: 100% !important;
+        justify-content: center !important;
+        flex-wrap: wrap;
+    }
+    
+    .sandbox-lang-selector .lang-btn {
+        flex: 1;
+        min-width: 70px;
+        text-align: center;
+        padding: 8px 4px !important;
+        font-size: 0.7rem !important;
+    }
+    
+    .toolbar-btn {
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+    
+    .code-editor-wrapper {
+        min-height: 250px !important;
+    }
+    
+    .code-input {
+        font-size: 13px !important;
+        padding: 12px !important;
+    }
+    
+    .line-numbers {
+        width: 35px !important;
+        font-size: 12px !important;
+        padding: 12px 5px !important;
+    }
+    
+    .editor-actions {
+        padding: 12px !important;
+    }
+    
+    .run-code-btn {
+        padding: 12px 20px !important;
+        font-size: 14px !important;
+    }
+    
+    .run-code-btn .shortcut-hint {
+        display: none;
+    }
+    
+    /* Output Panel */
+    .sandbox-output-panel {
+        min-height: 200px !important;
+    }
+    
+    .output-content {
+        padding: 12px !important;
+        font-size: 13px !important;
+    }
+    
+    /* Egzersizler */
+    .exercise-container {
+        padding: 16px !important;
+    }
+    
+    .exercise-code-area {
+        padding: 12px !important;
+    }
+    
+    .exercise-code-area pre {
+        font-size: 12px !important;
+        overflow-x: auto;
+    }
+    
+    .exercise-actions {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .exercise-actions button {
+        width: 100% !important;
+    }
+    
+    .blank-input {
+        min-width: 60px !important;
+        padding: 4px 8px !important;
+        font-size: 12px !important;
+    }
+    
+    /* Quiz */
+    .quiz-container {
+        padding: 16px !important;
+    }
+    
+    .quiz-options {
+        gap: 10px !important;
+    }
+    
+    .quiz-option {
+        padding: 12px !important;
+        font-size: 14px !important;
+    }
+    
+    /* Algoritma */
+    .algorithm-demo {
+        padding: 16px !important;
+    }
+    
+    .algo-visualization {
+        padding: 16px !important;
+        min-height: 150px !important;
+    }
+    
+    /* Komut Referansı */
+    .reference-categories {
+        gap: 6px !important;
+    }
+    
+    .ref-category-btn {
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+    
+    .reference-card {
+        padding: 14px !important;
+    }
+    
+    .command-modal-content {
+        padding: 16px !important;
+        max-height: 85vh !important;
+    }
+    
+    .command-detail-header h2 {
+        font-size: 1.3rem !important;
+    }
+    
+    .command-example pre {
+        font-size: 12px !important;
+        padding: 12px !important;
+    }
+    
+    /* Autocomplete */
+    .autocomplete-dropdown {
+        max-width: 90vw !important;
+        min-width: 200px !important;
+    }
+    
+    .autocomplete-item {
+        padding: 8px 10px !important;
+    }
+    
+    .autocomplete-hint {
+        display: none !important;
+    }
+    
+    /* Butonlar */
+    .btn-primary,
+    .btn-secondary {
+        padding: 12px 20px !important;
+        font-size: 14px !important;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Modal & Detay */
+    .concept-detail-modal,
+    .quiz-modal {
+        padding: 16px !important;
+    }
+    
+    /* Roadmap */
+    .roadmap {
+        gap: 12px !important;
+    }
+    
+    .roadmap-item {
+        flex-direction: column !important;
+        text-align: center;
+    }
+    
+    .roadmap-line {
+        display: none;
+    }
+}
+
+/* Küçük mobil */
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 1.3rem !important;
+    }
+    
+    .hero-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .sandbox-lang-selector .lang-btn {
+        font-size: 0.65rem !important;
+        padding: 6px 2px !important;
+    }
+    
+    .code-input {
+        font-size: 12px !important;
+    }
+    
+    .stat-card {
+        padding: 12px !important;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem !important;
+    }
+    
+    .concept-card h3,
+    .algorithm-card h3 {
+        font-size: 1rem !important;
+    }
+}
+
+/* Mobil menü butonu - HTML'de eklenecek */
+.mobile-menu-btn {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1001;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--accent-primary);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-btn:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 992px) {
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Sidebar overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+

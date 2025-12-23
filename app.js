@@ -4384,6 +4384,53 @@ function highlightMatch(name, word) {
 window.selectAutocompleteItem = selectAutocompleteItem;
 window.applyAutocomplete = applyAutocomplete;
 
+// ===== MOBİL MENÜ =====
+function toggleMobileMenu() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    
+    if (sidebar && overlay && menuBtn) {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+        
+        // Buton ikonunu değiştir
+        if (sidebar.classList.contains('open')) {
+            menuBtn.innerHTML = '✕';
+        } else {
+            menuBtn.innerHTML = '☰';
+        }
+    }
+}
+
+// Menü öğesine tıklandığında mobil menüyü kapat
+function closeMobileMenu() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    
+    if (sidebar && overlay && menuBtn) {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        menuBtn.innerHTML = '☰';
+    }
+}
+
+// Nav item tıklamalarında menüyü kapat
+document.addEventListener('DOMContentLoaded', () => {
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth <= 992) {
+                closeMobileMenu();
+            }
+        });
+    });
+});
+
+window.toggleMobileMenu = toggleMobileMenu;
+window.closeMobileMenu = closeMobileMenu;
+
 // Sayfa yüklendiğinde başlat
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(initAutocomplete, 500);
