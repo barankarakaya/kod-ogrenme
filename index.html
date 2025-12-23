@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kodlama Yolculuğu | Sıfırdan Başla</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Language Selection Modal -->
+    <div id="language-modal" class="language-modal">
+        <div class="language-modal-content">
+            <div class="language-modal-header">
+                <span class="modal-logo">{ }</span>
+                <h1>KodYolu'na Hoş Geldin!</h1>
+                <p>Hangi programlama dilini öğrenmek istiyorsun?</p>
+            </div>
+            <div class="language-options">
+                <div class="language-option" onclick="selectLanguage('python')">
+                    <span class="lang-icon">🐍</span>
+                    <h3>Python</h3>
+                    <p>Başlangıç için ideal, kolay sözdizimi</p>
+                    <span class="lang-badge popular">En Popüler</span>
+                </div>
+                <div class="language-option" onclick="selectLanguage('csharp')">
+                    <span class="lang-icon">💜</span>
+                    <h3>C#</h3>
+                    <p>Oyun ve uygulama geliştirme</p>
+                    <span class="lang-badge">Unity & .NET</span>
+                </div>
+                <div class="language-option" onclick="selectLanguage('web')">
+                    <span class="lang-icon">🌐</span>
+                    <h3>HTML & CSS</h3>
+                    <p>Web sayfası tasarımı</p>
+                    <span class="lang-badge">Web Temelleri</span>
+                </div>
+                <div class="language-option" onclick="selectLanguage('javascript')">
+                    <span class="lang-icon">⚡</span>
+                    <h3>JavaScript</h3>
+                    <p>Web etkileşimi ve dinamik içerik</p>
+                    <span class="lang-badge">Full Stack</span>
+                </div>
+            </div>
+            <div class="language-modal-footer">
+                <p>Daha sonra değiştirebilirsin</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">{ }</span>
+                <span class="logo-text">KodYolu</span>
+            </div>
+            
+            <div class="current-language" onclick="showLanguageModal()">
+                <span class="current-lang-icon" id="current-lang-icon">🐍</span>
+                <span class="current-lang-name" id="current-lang-name">Python</span>
+                <span class="change-lang-btn">Değiştir</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active" data-section="home">
+                    <span class="nav-icon">🏠</span>
+                    <span>Ana Sayfa</span>
+                </li>
+                <li class="nav-item" data-section="concepts">
+                    <span class="nav-icon">📚</span>
+                    <span>Temel Kavramlar</span>
+                </li>
+                <li class="nav-item" data-section="algorithms">
+                    <span class="nav-icon">🧩</span>
+                    <span>Algoritmalar</span>
+                </li>
+                <li class="nav-item" data-section="exercises">
+                    <span class="nav-icon">💻</span>
+                    <span>Egzersizler</span>
+                </li>
+                <li class="nav-item" data-section="sandbox">
+                    <span class="nav-icon">🖥️</span>
+                    <span>Kod Yaz</span>
+                </li>
+                <li class="nav-item" data-section="reference">
+                    <span class="nav-icon">📖</span>
+                    <span>Komut Referansı</span>
+                </li>
+                <li class="nav-item" data-section="quizzes">
+                    <span class="nav-icon">📝</span>
+                    <span>Mini Testler</span>
+                </li>
+                <li class="nav-item" data-section="progress">
+                    <span class="nav-icon">📈</span>
+                    <span>İlerleme</span>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="xp-bar">
+                    <span class="xp-label">Seviye <span id="user-level">1</span></span>
+                    <div class="xp-progress">
+                        <div class="xp-fill" id="xp-fill"></div>
+                    </div>
+                    <span class="xp-text"><span id="user-xp">0</span> / 100 XP</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Home Section -->
+            <section id="home" class="section active">
+                <div class="welcome-hero">
+                    <div class="hero-content">
+                        <h1 class="hero-title">
+                            <span class="greeting" id="greeting">Merhaba!</span>
+                            <span class="title-main">Kodlama Yolculuğuna Hoş Geldin</span>
+                        </h1>
+                        <p class="hero-subtitle">Sıfırdan başlayarak programlamayı öğren. Adım adım, eğlenceli ve interaktif derslerle kod yazmayı keşfet!</p>
+                        <button class="btn-primary btn-start" onclick="startLearning()">
+                            <span>🚀</span> Öğrenmeye Başla
+                        </button>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="code-preview">
+                            <div class="code-header">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                                <span class="filename">merhaba.py</span>
+                            </div>
+                            <pre class="code-body"><code><span class="keyword">def</span> <span class="function">selamla</span>(<span class="param">isim</span>):
+    <span class="keyword">return</span> <span class="string">f"Merhaba, {isim}!"</span>
+
+<span class="comment"># Çalıştır</span>
+<span class="function">print</span>(<span class="function">selamla</span>(<span class="string">"Kodcu"</span>))</code></pre>
+                            <div class="code-output">
+                                <span class="output-label">Çıktı:</span>
+                                <span class="output-text">Merhaba, Kodcu!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <span class="stat-icon">📖</span>
+                        <span class="stat-value" id="total-lessons">5</span>
+                        <span class="stat-label">Ders</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">💻</span>
+                        <span class="stat-value" id="total-exercises">30</span>
+                        <span class="stat-label">Egzersiz</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">✅</span>
+                        <span class="stat-value" id="completed-count">0</span>
+                        <span class="stat-label">Tamamlanan</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">🏆</span>
+                        <span class="stat-value" id="quiz-score">0</span>
+                        <span class="stat-label">Puan</span>
+                    </div>
+                </div>
+
+                <div class="roadmap-section">
+                    <h2 class="section-title">Öğrenme Yol Haritası</h2>
+                    <div class="roadmap">
+                        <div class="roadmap-item completed" data-step="1">
+                            <div class="roadmap-node">1</div>
+                            <div class="roadmap-content">
+                                <h3>Değişkenler</h3>
+                                <p>Verileri saklamayı öğren</p>
+                            </div>
+                        </div>
+                        <div class="roadmap-connector"></div>
+                        <div class="roadmap-item" data-step="2">
+                            <div class="roadmap-node">2</div>
+                            <div class="roadmap-content">
+                                <h3>Koşullar</h3>
+                                <p>If-Else ile karar ver</p>
+                            </div>
+                        </div>
+                        <div class="roadmap-connector"></div>
+                        <div class="roadmap-item" data-step="3">
+                            <div class="roadmap-node">3</div>
+                            <div class="roadmap-content">
+                                <h3>Döngüler</h3>
+                                <p>Tekrar eden işlemler</p>
+                            </div>
+                        </div>
+                        <div class="roadmap-connector"></div>
+                        <div class="roadmap-item" data-step="4">
+                            <div class="roadmap-node">4</div>
+                            <div class="roadmap-content">
+                                <h3>Fonksiyonlar</h3>
+                                <p>Kodunu modüler yap</p>
+                            </div>
+                        </div>
+                        <div class="roadmap-connector"></div>
+                        <div class="roadmap-item" data-step="5">
+                            <div class="roadmap-node">5</div>
+                            <div class="roadmap-content">
+                                <h3>Listeler</h3>
+                                <p>Verileri organize et</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Concepts Section -->
+            <section id="concepts" class="section">
+                <h1 class="page-title">📚 Temel Kavramlar</h1>
+                <p class="page-subtitle">Her bir kavramı tıklayarak detaylı açıklamaları ve örnekleri görüntüle</p>
+
+                <div class="concepts-grid">
+                    <div class="concept-card" data-concept="variables">
+                        <div class="concept-icon">📦</div>
+                        <h3>Değişkenler</h3>
+                        <p>Verileri hafızada saklama</p>
+                        <span class="concept-badge beginner">Başlangıç</span>
+                    </div>
+                    <div class="concept-card" data-concept="conditions">
+                        <div class="concept-icon">🔀</div>
+                        <h3>Koşullar (If-Else)</h3>
+                        <p>Karar verme yapıları</p>
+                        <span class="concept-badge beginner">Başlangıç</span>
+                    </div>
+                    <div class="concept-card" data-concept="loops">
+                        <div class="concept-icon">🔄</div>
+                        <h3>Döngüler</h3>
+                        <p>Tekrar eden işlemler</p>
+                        <span class="concept-badge intermediate">Orta</span>
+                    </div>
+                    <div class="concept-card" data-concept="functions">
+                        <div class="concept-icon">⚙️</div>
+                        <h3>Fonksiyonlar</h3>
+                        <p>Yeniden kullanılabilir kod blokları</p>
+                        <span class="concept-badge intermediate">Orta</span>
+                    </div>
+                    <div class="concept-card" data-concept="lists">
+                        <div class="concept-icon">📋</div>
+                        <h3>Listeler & Diziler</h3>
+                        <p>Veri koleksiyonları</p>
+                        <span class="concept-badge intermediate">Orta</span>
+                    </div>
+                </div>
+
+                <!-- Concept Detail Modal -->
+                <div id="concept-modal" class="modal">
+                    <div class="modal-content">
+                        <button class="modal-close" onclick="closeModal()">&times;</button>
+                        <div id="concept-detail"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Algorithms Section -->
+            <section id="algorithms" class="section">
+                <h1 class="page-title">🧩 Algoritmalar</h1>
+                <p class="page-subtitle">Adım adım düşünmeyi ve problem çözmeyi öğren</p>
+
+                <div class="algorithms-container">
+                    <div class="algorithm-card" data-algo="sum">
+                        <div class="algo-header">
+                            <span class="algo-icon">➕</span>
+                            <span class="algo-difficulty easy">Kolay</span>
+                        </div>
+                        <h3>Toplama İşlemi</h3>
+                        <p>1'den N'e kadar sayıları topla</p>
+                        <button class="btn-secondary" onclick="showAlgorithm('sum')">Çöz</button>
+                    </div>
+
+                    <div class="algorithm-card" data-algo="max">
+                        <div class="algo-header">
+                            <span class="algo-icon">📊</span>
+                            <span class="algo-difficulty easy">Kolay</span>
+                        </div>
+                        <h3>En Büyük Sayı</h3>
+                        <p>Bir listedeki en büyük sayıyı bul</p>
+                        <button class="btn-secondary" onclick="showAlgorithm('max')">Çöz</button>
+                    </div>
+
+                    <div class="algorithm-card" data-algo="factorial">
+                        <div class="algo-header">
+                            <span class="algo-icon">❗</span>
+                            <span class="algo-difficulty medium">Orta</span>
+                        </div>
+                        <h3>Faktöriyel</h3>
+                        <p>N! hesapla (örn: 5! = 120)</p>
+                        <button class="btn-secondary" onclick="showAlgorithm('factorial')">Çöz</button>
+                    </div>
+
+                    <div class="algorithm-card" data-algo="fibonacci">
+                        <div class="algo-header">
+                            <span class="algo-icon">🐚</span>
+                            <span class="algo-difficulty medium">Orta</span>
+                        </div>
+                        <h3>Fibonacci Serisi</h3>
+                        <p>Fibonacci sayılarını üret</p>
+                        <button class="btn-secondary" onclick="showAlgorithm('fibonacci')">Çöz</button>
+                    </div>
+                </div>
+
+                <!-- Algorithm Workspace -->
+                <div id="algorithm-workspace" class="algo-workspace hidden">
+                    <div class="workspace-header">
+                        <h2 id="algo-title">Algoritma</h2>
+                        <button class="btn-close" onclick="closeWorkspace()">✕ Kapat</button>
+                    </div>
+                    
+                    <div class="workspace-body">
+                        <div class="problem-panel">
+                            <h3>📋 Problem</h3>
+                            <p id="algo-description"></p>
+                            
+                            <h3>💡 İpuçları</h3>
+                            <ul id="algo-hints"></ul>
+                        </div>
+
+                        <div class="solution-panel">
+                            <h3>🔨 Adım Adım Çözüm</h3>
+                            <div id="algo-steps"></div>
+                            
+                            <h3>💻 Kod Örneği</h3>
+                            <div class="code-example">
+                                <pre id="algo-code"></pre>
+                            </div>
+
+                            <div class="try-section">
+                                <h3>🧪 Kendin Dene</h3>
+                                <div class="input-group">
+                                    <label id="algo-input-label">Değer gir:</label>
+                                    <input type="number" id="algo-input" value="5">
+                                    <button class="btn-primary" onclick="runAlgorithm()">Çalıştır</button>
+                                </div>
+                                <div class="result-box">
+                                    <span class="result-label">Sonuç:</span>
+                                    <span id="algo-result">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercises Section -->
+            <section id="exercises" class="section">
+                <h1 class="page-title">💻 Kod Egzersizleri</h1>
+                <p class="page-subtitle">Seviye seviye ilerle! Her bölümü tamamladıktan sonra bir sonrakine geçebilirsin.</p>
+
+                <!-- Level Progress -->
+                <div class="level-progress-container">
+                    <div class="level-progress-bar">
+                        <div class="level-node completed" data-level="1">
+                            <span class="level-icon">🎯</span>
+                            <span class="level-name">Temel Algoritmalar</span>
+                            <span class="level-status" id="level-status-1">0/5</span>
+                        </div>
+                        <div class="level-connector"></div>
+                        <div class="level-node locked" data-level="2">
+                            <span class="level-icon">📦</span>
+                            <span class="level-name">Değişkenler</span>
+                            <span class="level-status" id="level-status-2">🔒</span>
+                        </div>
+                        <div class="level-connector"></div>
+                        <div class="level-node locked" data-level="3">
+                            <span class="level-icon">🔀</span>
+                            <span class="level-name">Koşullar</span>
+                            <span class="level-status" id="level-status-3">🔒</span>
+                        </div>
+                        <div class="level-connector"></div>
+                        <div class="level-node locked" data-level="4">
+                            <span class="level-icon">🔄</span>
+                            <span class="level-name">Döngüler</span>
+                            <span class="level-status" id="level-status-4">🔒</span>
+                        </div>
+                        <div class="level-connector"></div>
+                        <div class="level-node locked" data-level="5">
+                            <span class="level-icon">⚙️</span>
+                            <span class="level-name">Fonksiyonlar</span>
+                            <span class="level-status" id="level-status-5">🔒</span>
+                        </div>
+                        <div class="level-connector"></div>
+                        <div class="level-node locked" data-level="6">
+                            <span class="level-icon">🚀</span>
+                            <span class="level-name">İleri Algoritmalar</span>
+                            <span class="level-status" id="level-status-6">🔒</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-categories">
+                    <button class="category-btn active" data-category="all" onclick="filterExercises('all')">Tümü</button>
+                    <button class="category-btn" data-category="algorithms_basic" onclick="filterExercises('algorithms_basic')">🎯 Temel Algo.</button>
+                    <button class="category-btn" data-category="variables" onclick="filterExercises('variables')">📦 Değişkenler</button>
+                    <button class="category-btn" data-category="conditions" onclick="filterExercises('conditions')">🔀 Koşullar</button>
+                    <button class="category-btn" data-category="loops" onclick="filterExercises('loops')">🔄 Döngüler</button>
+                    <button class="category-btn" data-category="functions" onclick="filterExercises('functions')">⚙️ Fonksiyonlar</button>
+                    <button class="category-btn" data-category="algorithms_advanced" onclick="filterExercises('algorithms_advanced')">🚀 İleri Algo.</button>
+                </div>
+
+                <div class="exercises-list" id="exercises-list">
+                    <!-- Exercise cards will be dynamically inserted -->
+                </div>
+
+                <!-- Exercise Workspace -->
+                <div id="exercise-workspace" class="exercise-workspace hidden">
+                    <div class="exercise-header">
+                        <div class="exercise-info">
+                            <span class="exercise-category-tag" id="exercise-category-tag">Değişkenler</span>
+                            <h2 id="exercise-title">Egzersiz Başlığı</h2>
+                        </div>
+                        <button class="btn-close" onclick="closeExercise()">✕ Kapat</button>
+                    </div>
+
+                    <div class="exercise-body">
+                        <div class="exercise-instructions">
+                            <h3>📋 Görev</h3>
+                            <p id="exercise-description">Egzersiz açıklaması...</p>
+                            
+                            <div class="expected-output">
+                                <h4>🎯 Beklenen Çıktı</h4>
+                                <div class="output-preview" id="expected-output">Merhaba, Dünya!</div>
+                            </div>
+                        </div>
+
+                        <div class="code-editor-area">
+                            <div class="editor-header">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                                <span class="filename">egzersiz.py</span>
+                            </div>
+                            <div class="code-lines" id="code-lines">
+                                <!-- Code lines will be dynamically inserted -->
+                            </div>
+                        </div>
+
+                        <div class="exercise-actions">
+                            <button class="btn-secondary" id="btn-exercise-hint" onclick="showExerciseHint()">
+                                💡 İpucu
+                            </button>
+                            <button class="btn-primary" onclick="checkExercise()">
+                                ▶️ Kontrol Et
+                            </button>
+                        </div>
+
+                        <div id="exercise-result" class="exercise-result hidden">
+                            <div class="result-header">
+                                <span class="result-icon" id="result-icon">✓</span>
+                                <span class="result-title" id="result-title">Sonuç</span>
+                            </div>
+                            <div class="result-details" id="result-details">
+                                <!-- Result details -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exercise-navigation">
+                        <button class="btn-secondary" id="btn-prev-exercise" onclick="prevExercise()">← Önceki</button>
+                        <span class="exercise-counter">
+                            Egzersiz <span id="current-exercise-num">1</span> / <span id="total-exercises">10</span>
+                        </span>
+                        <button class="btn-secondary" id="btn-next-exercise" onclick="nextExercise()">Sonraki →</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sandbox Section -->
+            <section id="sandbox" class="section">
+                <h1 class="page-title">🖥️ Kod Yazma Alanı</h1>
+                <p class="page-subtitle" id="sandbox-subtitle">Kodlarını yaz, çalıştır ve sonuçları gör!</p>
+
+                <div class="sandbox-container">
+                    <div class="sandbox-editor-panel">
+                        <div class="editor-toolbar">
+                            <div class="toolbar-left">
+                                <div class="sandbox-lang-selector">
+                                    <button class="lang-btn active" data-lang="python" onclick="switchSandboxLang('python')">
+                                        🐍 Python
+                                    </button>
+                                    <button class="lang-btn" data-lang="csharp" onclick="switchSandboxLang('csharp')">
+                                        💜 C#
+                                    </button>
+                                    <button class="lang-btn" data-lang="javascript" onclick="switchSandboxLang('javascript')">
+                                        ⚡ JavaScript
+                                    </button>
+                                    <button class="lang-btn" data-lang="web" onclick="switchSandboxLang('web')">
+                                        🌐 HTML/CSS
+                                    </button>
+                                </div>
+                                <span class="file-tab active">
+                                    <span class="dot green"></span>
+                                    main.py
+                                </span>
+                            </div>
+                            <div class="toolbar-right">
+                                <button class="toolbar-btn" onclick="clearCode()" title="Temizle">
+                                    🗑️ Temizle
+                                </button>
+                                <button class="toolbar-btn" onclick="loadExample()" title="Örnek Yükle">
+                                    📄 Örnek
+                                </button>
+                                <button class="toolbar-btn primary" onclick="runCode()" title="Çalıştır (Ctrl+Enter)">
+                                    ▶️ Çalıştır
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="code-editor-wrapper">
+                            <div class="line-numbers" id="line-numbers">1</div>
+                            <div class="editor-container">
+                                <textarea id="code-input" class="code-input" 
+                                    placeholder="# Python kodunu buraya yaz...
+# Örnek:
+print('Merhaba Dünya!')
+
+isim = 'Ali'
+print(f'Merhaba, {isim}!')"
+                                    spellcheck="false"></textarea>
+                                <!-- Autocomplete Dropdown -->
+                                <div id="autocomplete-dropdown" class="autocomplete-dropdown hidden">
+                                    <div class="autocomplete-list" id="autocomplete-list"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Çalıştır butonu - her zaman görünür -->
+                        <div class="editor-actions">
+                            <button class="run-code-btn" onclick="runCode()">
+                                <span class="run-icon">▶️</span>
+                                <span>Çalıştır</span>
+                                <span class="shortcut-hint">Ctrl+Enter</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="sandbox-output-panel">
+                        <div class="output-header">
+                            <span class="output-title">📤 Çıktı</span>
+                            <button class="clear-output-btn" onclick="clearOutput()">Temizle</button>
+                        </div>
+                        <div class="output-content" id="output-content">
+                            <div class="output-placeholder">
+                                <span class="placeholder-icon">🚀</span>
+                                <p>Kodunu yaz ve "Çalıştır" butonuna bas!</p>
+                                <p class="placeholder-hint">veya Ctrl+Enter kullan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Help Panel -->
+                <div id="error-help-panel" class="error-help-panel hidden">
+                    <div class="error-help-header">
+                        <span class="error-icon">⚠️</span>
+                        <h3>Hata Tespit Edildi!</h3>
+                        <button class="close-error-help" onclick="closeErrorHelp()">✕</button>
+                    </div>
+                    <div class="error-help-body">
+                        <div class="error-message" id="error-message"></div>
+                        <div class="error-suggestion" id="error-suggestion"></div>
+                        <div class="lesson-recommendation" id="lesson-recommendation">
+                            <h4>📚 Önerilen Ders:</h4>
+                            <button class="goto-lesson-btn" id="goto-lesson-btn" onclick="goToRecommendedLesson()">
+                                Derse Git →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Examples -->
+                <div class="quick-examples">
+                    <h3>🎯 Hızlı Örnekler</h3>
+                    <div class="examples-grid">
+                        <div class="example-card" onclick="loadExampleCode('hello')">
+                            <span class="example-icon">👋</span>
+                            <span class="example-name">Merhaba Dünya</span>
+                        </div>
+                        <div class="example-card" onclick="loadExampleCode('variables')">
+                            <span class="example-icon">📦</span>
+                            <span class="example-name">Değişkenler</span>
+                        </div>
+                        <div class="example-card" onclick="loadExampleCode('condition')">
+                            <span class="example-icon">🔀</span>
+                            <span class="example-name">If-Else</span>
+                        </div>
+                        <div class="example-card" onclick="loadExampleCode('loop')">
+                            <span class="example-icon">🔄</span>
+                            <span class="example-name">Döngü</span>
+                        </div>
+                        <div class="example-card" onclick="loadExampleCode('function')">
+                            <span class="example-icon">⚙️</span>
+                            <span class="example-name">Fonksiyon</span>
+                        </div>
+                        <div class="example-card" onclick="loadExampleCode('list')">
+                            <span class="example-icon">📋</span>
+                            <span class="example-name">Liste</span>
+                        </div>
+                        <div class="example-card" onclick="loadExampleCode('fibonacci')">
+                            <span class="example-icon">🐚</span>
+                            <span class="example-name">Fibonacci</span>
+                        </div>
+                        <div class="example-card" onclick="loadExampleCode('factorial')">
+                            <span class="example-icon">❗</span>
+                            <span class="example-name">Faktöriyel</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keyboard Shortcuts -->
+                <div class="keyboard-shortcuts">
+                    <h4>⌨️ Kısayollar</h4>
+                    <div class="shortcuts-list">
+                        <span class="shortcut"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> Çalıştır</span>
+                        <span class="shortcut"><kbd>Ctrl</kbd> + <kbd>L</kbd> Temizle</span>
+                        <span class="shortcut"><kbd>Tab</kbd> Girinti</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reference Section - Komut Referansı -->
+            <section id="reference" class="section">
+                <h1 class="page-title">📖 Komut Referansı</h1>
+                <p class="page-subtitle" id="reference-subtitle">Tüm komutları ve yapıları detaylı öğren!</p>
+
+                <!-- Kategori Filtreleri -->
+                <div class="reference-categories">
+                    <button class="ref-category-btn active" data-category="all" onclick="window.filterReference('all')">📚 Tümü</button>
+                    <button class="ref-category-btn" data-category="basics" onclick="window.filterReference('basics')">🎯 Temel</button>
+                    <button class="ref-category-btn" data-category="variables" onclick="window.filterReference('variables')">📦 Değişkenler</button>
+                    <button class="ref-category-btn" data-category="operators" onclick="window.filterReference('operators')">➕ Operatörler</button>
+                    <button class="ref-category-btn" data-category="conditions" onclick="window.filterReference('conditions')">🔀 Koşullar</button>
+                    <button class="ref-category-btn" data-category="loops" onclick="window.filterReference('loops')">🔄 Döngüler</button>
+                    <button class="ref-category-btn" data-category="functions" onclick="window.filterReference('functions')">⚙️ Fonksiyonlar</button>
+                    <button class="ref-category-btn" data-category="arrays" onclick="window.filterReference('arrays')">📋 Diziler</button>
+                    <button class="ref-category-btn" data-category="strings" onclick="window.filterReference('strings')">📝 Stringler</button>
+                    <button class="ref-category-btn" data-category="io" onclick="window.filterReference('io')">📤 Giriş/Çıkış</button>
+                </div>
+
+                <!-- Arama -->
+                <div class="reference-search">
+                    <input type="text" id="reference-search-input" placeholder="🔍 Komut ara... (örn: print, for, if)" oninput="window.searchReference()">
+                </div>
+
+                <!-- Komut Listesi -->
+                <div class="reference-list" id="reference-list">
+                    <!-- Komutlar JavaScript ile dinamik olarak yüklenecek -->
+                </div>
+
+                <!-- Komut Detay Modal -->
+                <div id="command-modal" class="modal">
+                    <div class="modal-content command-modal-content">
+                        <button class="modal-close" onclick="window.closeCommandModal()">&times;</button>
+                        <div id="command-detail"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quizzes Section -->
+            <section id="quizzes" class="section">
+                <h1 class="page-title">📝 Mini Testler</h1>
+                <p class="page-subtitle">Öğrendiklerini test et ve puan kazan!</p>
+
+                <div class="quiz-selector">
+                    <div class="quiz-topic-card" data-quiz="basics" onclick="startQuiz('basics')">
+                        <span class="quiz-topic-icon">🎯</span>
+                        <h3>Temel Kavramlar</h3>
+                        <p>5 Soru • 50 XP</p>
+                        <div class="quiz-status" id="quiz-status-basics">Başlamadı</div>
+                    </div>
+                    <div class="quiz-topic-card" data-quiz="loops" onclick="startQuiz('loops')">
+                        <span class="quiz-topic-icon">🔄</span>
+                        <h3>Döngüler</h3>
+                        <p>5 Soru • 50 XP</p>
+                        <div class="quiz-status" id="quiz-status-loops">Başlamadı</div>
+                    </div>
+                    <div class="quiz-topic-card" data-quiz="algorithms" onclick="startQuiz('algorithms')">
+                        <span class="quiz-topic-icon">🧠</span>
+                        <h3>Algoritmalar</h3>
+                        <p>5 Soru • 50 XP</p>
+                        <div class="quiz-status" id="quiz-status-algorithms">Başlamadı</div>
+                    </div>
+                </div>
+
+                <!-- Quiz Container -->
+                <div id="quiz-container" class="quiz-area hidden">
+                    <div class="quiz-header">
+                        <div class="quiz-progress-bar">
+                            <div class="quiz-progress-fill" id="quiz-progress"></div>
+                        </div>
+                        <span class="quiz-counter">Soru <span id="current-question">1</span>/<span id="total-questions">5</span></span>
+                    </div>
+
+                    <div class="quiz-question-area">
+                        <h2 id="quiz-question" class="quiz-question">Soru yükleniyor...</h2>
+                        
+                        <div class="quiz-code-block hidden" id="quiz-code-block">
+                            <pre id="quiz-code"></pre>
+                        </div>
+
+                        <div class="quiz-options" id="quiz-options">
+                            <!-- Options will be dynamically inserted -->
+                        </div>
+                    </div>
+
+                    <div class="quiz-feedback hidden" id="quiz-feedback">
+                        <div class="feedback-content">
+                            <span class="feedback-icon" id="feedback-icon">✓</span>
+                            <p id="feedback-text">Doğru!</p>
+                        </div>
+                    </div>
+
+                    <div class="quiz-actions">
+                        <button class="btn-secondary" id="btn-hint" onclick="showHint()">💡 İpucu</button>
+                        <button class="btn-primary" id="btn-next" onclick="nextQuestion()" disabled>Sonraki →</button>
+                    </div>
+                </div>
+
+                <!-- Quiz Results -->
+                <div id="quiz-results" class="quiz-results hidden">
+                    <div class="results-content">
+                        <h2>🎉 Test Tamamlandı!</h2>
+                        <div class="score-display">
+                            <span class="score-value" id="final-score">0</span>
+                            <span class="score-label">/ 5 Doğru</span>
+                        </div>
+                        <p class="xp-earned">+<span id="xp-earned">0</span> XP Kazandın!</p>
+                        <button class="btn-primary" onclick="closeQuiz()">Tamam</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress Section -->
+            <section id="progress" class="section">
+                <h1 class="page-title">📈 İlerleme Durumu</h1>
+                <p class="page-subtitle">Öğrenme yolculuğundaki başarılarını takip et</p>
+
+                <div class="progress-overview">
+                    <div class="progress-card">
+                        <h3>Genel İlerleme</h3>
+                        <div class="circular-progress">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" class="progress-bg"></circle>
+                                <circle cx="50" cy="50" r="45" class="progress-fill" id="overall-progress-circle"></circle>
+                            </svg>
+                            <span class="progress-percentage" id="overall-percentage">0%</span>
+                        </div>
+                    </div>
+
+                    <div class="achievements-card">
+                        <h3>🏆 Rozetler</h3>
+                        <div class="badges-grid">
+                            <div class="badge locked" id="badge-first-lesson" title="İlk Ders">
+                                <span>📖</span>
+                            </div>
+                            <div class="badge locked" id="badge-first-quiz" title="İlk Test">
+                                <span>📝</span>
+                            </div>
+                            <div class="badge locked" id="badge-algorithm-master" title="Algoritma Ustası">
+                                <span>🧩</span>
+                            </div>
+                            <div class="badge locked" id="badge-perfect-score" title="Mükemmel Skor">
+                                <span>⭐</span>
+                            </div>
+                            <div class="badge locked" id="badge-level-5" title="Seviye 5">
+                                <span>🎖️</span>
+                            </div>
+                            <div class="badge locked" id="badge-dedication" title="Azimli">
+                                <span>🔥</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-section">
+                    <h3>📅 Aktivite Geçmişi</h3>
+                    <div class="activity-list" id="activity-list">
+                        <div class="activity-item">
+                            <span class="activity-icon">🎉</span>
+                            <span class="activity-text">Hesap oluşturuldu</span>
+                            <span class="activity-time">Şimdi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h3>📊 Detaylı İstatistikler</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-name">Toplam XP</span>
+                            <span class="stat-val" id="total-xp-stat">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-name">Tamamlanan Dersler</span>
+                            <span class="stat-val" id="lessons-completed-stat">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-name">Tamamlanan Egzersizler</span>
+                            <span class="stat-val" id="exercises-completed-stat">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-name">Test Doğru Oranı</span>
+                            <span class="stat-val" id="quiz-accuracy-stat">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-danger" onclick="resetProgress()">🔄 İlerlemeyi Sıfırla</button>
+            </section>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">
+        <span id="toast-message"></span>
+    </div>
+
+    <script src="concepts-data.js"></script>
+    <script src="commands-python.js"></script>
+    <script src="commands-data.js"></script>
+    <script src="exercises-csharp.js"></script>
+    <script src="exercises-javascript.js"></script>
+    <script src="exercises-web.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Komut Referansı başlatma garantisi
+        window.addEventListener('load', function() {
+            console.log('Sayfa yüklendi');
+            console.log('allCommandsData:', typeof allCommandsData !== 'undefined' ? 'VAR' : 'YOK');
+            
+            setTimeout(function() {
+                if (window.initReference) {
+                    console.log('initReference çağrılıyor...');
+                    window.initReference();
+                } else {
+                    console.error('initReference fonksiyonu bulunamadı!');
+                }
+            }, 300);
+        });
+        
+        // Hata yakalama
+        window.onerror = function(msg, url, line) {
+            console.error('HATA:', msg, 'Satır:', line);
+            return false;
+        };
+    </script>
+</body>
+</html>
+
