@@ -2983,13 +2983,31 @@ function runCode() {
     if (!codeInput || !outputContent) return;
     
     const code = codeInput.value.trim();
-    const lang = state.selectedLanguage || 'python';
+    
+    // Sandbox dil seçicisinden aktif dili al
+    const activeLangBtn = document.querySelector('.sandbox-lang-selector .lang-btn.active');
+    const lang = activeLangBtn ? activeLangBtn.dataset.lang : (state.selectedLanguage || 'python');
     
     if (!code) {
         outputContent.innerHTML = `
             <div class="output-placeholder">
                 <span class="placeholder-icon">📝</span>
                 <p>Önce bir kod yazın!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Yanlış dil algılama
+    const wrongLangWarning = detectWrongLanguage(code, lang);
+    if (wrongLangWarning) {
+        outputContent.innerHTML = `
+            <div class="output-line warning" style="background: rgba(253, 203, 110, 0.1); border-left: 4px solid #fdcb6e; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                <strong>⚠️ Yanlış Dil Uyarısı!</strong><br>
+                ${wrongLangWarning.message}<br>
+                <button onclick="switchSandboxLang('${wrongLangWarning.suggestedLang}')" style="margin-top: 8px; padding: 6px 12px; background: #6c5ce7; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                    ${wrongLangWarning.buttonText}
+                </button>
             </div>
         `;
         return;
@@ -3020,6 +3038,66 @@ function runCode() {
                 runPythonCode(code, outputContent);
         }
     }, 100);
+}
+
+// Yanlış dil algılama fonksiyonu
+function detectWrongLanguage(code, currentLang) {
+    const codeLC = code.toLowerCase();
+    
+    // Dil işaretleri
+    const langPatterns = {
+        csharp: {
+            patterns: [/Console\.(WriteLine|Write|ReadLine)/i, /^using\s+\w+/m, /^(public|private|static)\s+(void|int|string|class)/m, /^namespace\s+/m],
+            name: 'C#',
+            icon: '💜'
+        },
+        python: {
+            patterns: [/^print\s*\(/m, /^def\s+\w+\s*\(/m, /^import\s+\w+/m, /^from\s+\w+\s+import/m, /^\s*#[^!]/m, /^elif\s+/m],
+            name: 'Python',
+            icon: '🐍'
+        },
+        javascript: {
+            patterns: [/console\.(log|error|warn)/i, /^(const|let|var)\s+\w+\s*=/m, /=>\s*\{?/m, /^function\s+\w+/m, /document\.(getElementById|querySelector)/i],
+            name: 'JavaScript',
+            icon: '⚡'
+        },
+        web: {
+            patterns: [/<html/i, /<body/i, /<div/i, /<head/i, /<!DOCTYPE/i, /<style/i, /<script/i, /<\/\w+>/i],
+            name: 'HTML/CSS',
+            icon: '🌐'
+        }
+    };
+    
+    // Her dil için pattern kontrol et
+    let detectedLang = null;
+    let maxMatches = 0;
+    
+    for (const [langKey, langData] of Object.entries(langPatterns)) {
+        let matches = 0;
+        for (const pattern of langData.patterns) {
+            if (pattern.test(code)) {
+                matches++;
+            }
+        }
+        if (matches > maxMatches) {
+            maxMatches = matches;
+            detectedLang = langKey;
+        }
+    }
+    
+    // Eğer algılanan dil mevcut dilden farklıysa ve en az 1 eşleşme varsa
+    if (detectedLang && detectedLang !== currentLang && maxMatches >= 1) {
+        const detected = langPatterns[detectedLang];
+        const current = langPatterns[currentLang];
+        
+        return {
+            message: `Bu kod ${detected.icon} <strong>${detected.name}</strong> gibi görünüyor, ama sen ${current?.icon || '📝'} <strong>${current?.name || currentLang}</strong> modundasın.`,
+            suggestedLang: detectedLang,
+            buttonText: `${detected.icon} ${detected.name} moduna geç`
+        };
+    }
+    
+    return null;
 }
 
 function runPythonCode(code, outputContent) {
@@ -3195,15 +3273,35 @@ function runCSharpCode(code, outputContent) {
     
     // İfadeyi değerlendir (matematiksel işlemler ve değişkenler)
     function evaluateExpression(expr) {
-        expr = expr.trim();
+        if (!expr) return '';
+        expr = String(expr).trim();
         
-        // Parantezleri temizle
-        if (expr.startsWith('(') && expr.endsWith(')')) {
-            expr = expr.slice(1, -1);
+        // Noktalı virgülü kaldır
+        if (expr.endsWith(';')) {
+            expr = expr.slice(0, -1).trim();
+        }
+        
+        // Parantezleri temizle (sadece dıştaki)
+        while (expr.startsWith('(') && expr.endsWith(')')) {
+            const inner = expr.slice(1, -1);
+            // Parantezlerin dengeli olup olmadığını kontrol et
+            let balance = 0;
+            let valid = true;
+            for (const char of inner) {
+                if (char === '(') balance++;
+                if (char === ')') balance--;
+                if (balance < 0) { valid = false; break; }
+            }
+            if (valid && balance === 0) {
+                expr = inner.trim();
+            } else {
+                break;
+            }
         }
         
         // String mi?
-        if (expr.startsWith('"') && expr.endsWith('"')) {
+        if ((expr.startsWith('"') && expr.endsWith('"')) || 
+            (expr.startsWith("'") && expr.endsWith("'"))) {
             return expr.slice(1, -1);
         }
         
@@ -3212,30 +3310,41 @@ function runCSharpCode(code, outputContent) {
         if (expr === 'false') return false;
         
         // Direkt sayı mı?
-        if (!isNaN(expr) && expr !== '') {
+        if (!isNaN(expr) && expr !== '' && !/[a-zA-Z_]/.test(expr)) {
             return parseFloat(expr);
         }
         
-        // Sadece değişken mi?
-        if (variables[expr] !== undefined) {
+        // Sadece değişken mi? (tek kelime)
+        if (/^\w+$/.test(expr) && variables.hasOwnProperty(expr)) {
             return variables[expr];
         }
         
         // Matematiksel ifade - değişkenleri değerlerle değiştir
         let evalExpr = expr;
-        for (const [varName, varValue] of Object.entries(variables)) {
+        
+        // Değişkenleri değerleriyle değiştir (uzun isimlerden kısaya doğru sırala)
+        const sortedVars = Object.keys(variables).sort((a, b) => b.length - a.length);
+        for (const varName of sortedVars) {
+            const varValue = variables[varName];
             // Tam kelime eşleşmesi için regex
             const regex = new RegExp('\\b' + varName + '\\b', 'g');
-            evalExpr = evalExpr.replace(regex, varValue);
+            if (typeof varValue === 'string') {
+                evalExpr = evalExpr.replace(regex, `"${varValue}"`);
+            } else {
+                evalExpr = evalExpr.replace(regex, String(varValue));
+            }
         }
         
         // Güvenli değerlendirme (sadece sayılar ve operatörler)
         try {
             // Sadece güvenli karakterler: sayılar, +, -, *, /, %, (, ), boşluk, nokta
             if (/^[\d\s\+\-\*\/\%\(\)\.]+$/.test(evalExpr)) {
-                return eval(evalExpr);
+                const result = eval(evalExpr);
+                return result;
             }
-        } catch (e) {}
+        } catch (e) {
+            console.log('Eval error:', e);
+        }
         
         return expr; // Değerlendiremediyse olduğu gibi döndür
     }
@@ -3298,7 +3407,7 @@ function runCSharpCode(code, outputContent) {
             }
             
             // Değişken tanımlama: int x = 5; veya string s = "test";
-            const varMatch = trimmed.match(/^(int|string|double|float|bool|var)\s+(\w+)\s*=\s*(.+?)\s*;?$/);
+            const varMatch = trimmed.match(/^(int|string|double|float|bool|var)\s+(\w+)\s*=\s*(.+);?\s*$/);
             if (varMatch) {
                 const varType = varMatch[1];
                 const varName = varMatch[2];
@@ -3309,13 +3418,14 @@ function runCSharpCode(code, outputContent) {
                     valueExpr = valueExpr.slice(0, -1).trim();
                 }
                 
-                variables[varName] = evaluateExpression(valueExpr);
+                const evaluatedValue = evaluateExpression(valueExpr);
+                variables[varName] = evaluatedValue;
                 continue;
             }
             
             // Değişken ataması (tip olmadan): x = 10;
-            const assignMatch = trimmed.match(/^(\w+)\s*=\s*(.+?)\s*;?$/);
-            if (assignMatch && variables[assignMatch[1]] !== undefined) {
+            const assignMatch = trimmed.match(/^(\w+)\s*=\s*(.+);?\s*$/);
+            if (assignMatch && !trimmed.match(/^(int|string|double|float|bool|var)\s/) && variables.hasOwnProperty(assignMatch[1])) {
                 const varName = assignMatch[1];
                 let valueExpr = assignMatch[2].trim();
                 if (valueExpr.endsWith(';')) {
